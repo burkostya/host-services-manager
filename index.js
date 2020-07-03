@@ -4,7 +4,7 @@ const Promise = require('bluebird');
 const fs = require('fs');
 const yaml = require('js-yaml');
 const uuid = require('uuid4');
-// const mock = require('./mock');
+const mock = require('./mock');
 
 const app = express();
 const serviceExceptions = (process.env.EXCEPTIONS && process.env.EXCEPTIONS.split(',')) || [];
@@ -108,8 +108,14 @@ const execCmd = async cmd => new Promise((resolve, reject) => {
 
 const getAvailableServices = async () => {
   const cmd = 'find /etc/service/* -type l -exec test -e {} \\; -exec /usr/bin/sudo /usr/bin/sv status {} \\;';
-  const list = await execCmd(cmd);
-  // list = mock.svStatusResult;
+  let list;
+
+  if (process.env.MOCK_SERVICES === 'true') {
+    list = mock.svStatusResult;
+  } else {
+    list = await execCmd(cmd);
+  }
+
   return list
     .split('\n')
     .filter(line => Boolean(line))
@@ -484,4 +490,8 @@ app.get('/serviceRestart/:name', async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 3000);
+const port = process.env.PORT || 3000;
+
+console.log(`Listening on ${port}`);
+
+app.listen(port);
