@@ -8,7 +8,11 @@ const uuid = require('uuid4');
 
 const app = express();
 const serviceExceptions = (process.env.EXCEPTIONS && process.env.EXCEPTIONS.split(',')) || [];
-console.log(`Exceptions list: ${serviceExceptions.join()}`);
+
+if (serviceExceptions.length > 0) {
+  console.log(`Exceptions list: ${serviceExceptions.join()}`);
+}
+
 const MAP_SERVICES = {};
 
 function clone(obj) {
