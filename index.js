@@ -138,6 +138,8 @@ const getAvailableServices = async () => {
     .filter(service => !serviceExceptions.includes(service.name));
 };
 
+const twiketHome = '/home/twiket';
+
 const getFileDataByRunFile = async (serviceName, runFilePath, nameFileService) => {
   const readFileAsync = Promise.promisify(fs.readFile);
   const statAsync = Promise.promisify(fs.stat);
@@ -152,7 +154,7 @@ const getFileDataByRunFile = async (serviceName, runFilePath, nameFileService) =
 
   let fileData = await readFileAsync(runFilePath, 'utf-8');
 
-  const firstIndex = fileData.indexOf('/home/twiket/');
+  const firstIndex = fileData.indexOf(twiketHome);
 
   fileData = fileData.substr(firstIndex);
 
@@ -168,7 +170,7 @@ const getFileDataByRunFile = async (serviceName, runFilePath, nameFileService) =
 
   if (!data) {
     try {
-      pathLog = `/home/twiket/${serviceName}/${nameFileService}`;
+      pathLog = `${twiketHome}/${serviceName}/${nameFileService}`;
       data = await statAsync(pathLog);
     } catch (e) {
       return undefined;
