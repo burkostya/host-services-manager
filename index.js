@@ -315,8 +315,9 @@ async function doDependentServices(nameService, command, skipStatus) {
     return [];
   }
 
-  const dependentServices = parseFile.dependentServices.filter(ds => !skipStatus
-                                                                || MAP_SERVICES[ds].status !== skipStatus);
+  const dependentServices = parseFile.dependentServices.filter(
+    ds => !skipStatus || MAP_SERVICES[ds].status !== skipStatus,
+  );
   const items = [];
 
   // eslint-disable-next-line no-restricted-syntax
