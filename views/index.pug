@@ -1,36 +1,32 @@
 html
   head
     title= title
-  body
+  body(class="m-4")
     link(rel='stylesheet' href='style.css')
     script(src='weblogic.js')
-    |
-    |
-    h2= 'MASS ACTIONS:'
-    button(type='button' class='btnMass' onclick='serviceAll("ON")')= 'turn ON all services'
-    button(type='button' class='btnMass' onclick='serviceAll("OFF")')= 'turn OFF all services '
-    button(type='button' class='btnMass' onclick='serviceAll("RESTART")')= 'RESTART all services'
-    button(type='button' class='btnMass' onclick='serviceAll("RESTART_ALIVE")')= 'RESTART all enabled services'
-    |
-    h2= 'SERVER: ' + hostname
-    |
-    |
-    h2= 'RUN CHEF:'
-    ul
-      if chefService.status == 'run'
-        span(class='serviceName serviceOn' id='chefService')= chefService.name
-      else
-        span(class='serviceName serviceOff' id='chefService')= chefService.name
-      button(type='button' class='btn' id='btnChefServiceOn' onclick='chefServiceOn()')= 'RUN'
-      button(type='button' class='btn' id='btnChefServiceOff' onclick='chefServiceOff()')= 'KILL'
-      if chefService.status == 'run'
-        img(src='loader.gif' class='loader' style="visibility:visible" id='loaderChefService')
-      else
-        img(src='loader.gif' class='loader' id='loaderChefService')
-
-    |
+    section(class="server")
+      h2= 'SERVER: ' + hostname
+    section(class="mass-actions")
+      h2= 'MASS ACTIONS:'
+      button(type='button' class='btnMass btn btn-primary' onclick='serviceAll("ON")')= 'turn ON all services'
+      button(type='button' class='btnMass btn btn-outline-secondary' onclick='serviceAll("OFF")')= 'turn OFF all services '
+      button(type='button' class='btnMass btn btn-outline-secondary' onclick='serviceAll("RESTART")')= 'RESTART all services'
+      button(type='button' class='btnMass btn btn-outline-secondary' onclick='serviceAll("RESTART_ALIVE")')= 'RESTART all enabled services'
+    section(class='chef')
+      h2= 'RUN CHEF:'
+      ul
+        if chefService.status == 'run'
+          span(class='serviceName serviceOn' id='chefService')= chefService.name
+        else
+          span(class='serviceName serviceOff' id='chefService')= chefService.name
+        button(type='button' class='btn btn-primary' id='btnChefServiceOn' onclick='chefServiceOn()')= 'RUN'
+        button(type='button' class='btn btn-outline-secondary' id='btnChefServiceOff' onclick='chefServiceOff()')= 'KILL'
+        if chefService.status == 'run'
+          img(src='loader.gif' class='loader' style="visibility:visible" id='loaderChefService')
+        else
+          img(src='loader.gif' class='loader' id='loaderChefService')
     h2= 'ACTIONS BY SERVICE:'
-    ul
+    section(class='services d-flex flex-wrap')
       each service, id in services
         include ../components/service-card.pug
     div(id='overlay')

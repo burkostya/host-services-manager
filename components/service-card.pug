@@ -1,18 +1,23 @@
-div(class='serviceRow')
-  if service.status == 'run'
-    div(class='serviceName serviceOn tooltip' id='serviceName'+service.id)= service.name
-      span(class='tooltiptext')= service.yamlFileShow
-  else
-    div(class='serviceName serviceOff tooltip' id='serviceName'+service.id)= service.name
-      span(class='tooltiptext')= service.yamlFileShow
-  input(type='checkbox' title='Работа с зависимостями' id='checkbox'+service.id)
-  button(type='button' class='btn' id='btnOn'+service.id onclick='serviceOn("'+service.id+'","'+service.name+'")')= 'START'
-  button(type='button' class='btn' id='btnOff'+service.id onclick='serviceOff("'+service.id+'","'+service.name+'")')= 'STOP'
-  button(type='button' class='btn' id='btnRestart'+service.id onclick='serviceRestart("'+service.id+'","'+service.name+'")')= 'RESTART'
-  img(src='loader.gif' class='loader' id='loader'+service.id)
-  span(class='serviceName branchInfo' id='branch'+service.id)= service.branch
-  div(id='dependentServiceOffModal' class='modal active')
-    div(class='modal-header')
-      div(id='dependentServiceOffModalHeader' class='title')
-      button(data-close-button class='close-button' onclick='closePopup()')='x'
-    div(id='dependentServiceOffModalBody' class='modal-body')
+div(class='serviceRow card flex-shrink-0')
+  div(class="card-header d-flex")
+    if service.status == 'run'
+      div(class='serviceName serviceOn' data-toggle='tooltip' id='serviceName'+service.id)= service.name
+        span(class='tooltiptext')= service.yamlFileShow
+      span(class='badge badge-pill badge-success ml-auto')= 'RUNNING'
+    else
+      div(class='serviceName serviceOff' data-toggle='tooltip' id='serviceName'+service.id)= service.name
+        span(class='tooltiptext')= service.yamlFileShow
+      span(class='badge badge-pill badge-secondary ml-auto')= 'STOPED'
+  div(class="card-body")
+    span(class='serviceName' id='branch'+service.id)= service.branch
+    div(id='dependentServiceOffModal' class='modal active')
+      div(class='modal-header')
+        div(id='dependentServiceOffModalHeader' class='title')
+        button(data-close-button class='close-button' onclick='closePopup()')='x'
+      div(id='dependentServiceOffModalBody' class='modal-body')
+  div(class="card-footer py-0 px-1 d-flex align-items-center")
+    input(type='checkbox' class="ml-1 mr-2" title='Работа с зависимостями' id='checkbox'+service.id)
+    button(type='button' class='btn btn-outline-primary btn-sm ml-0 mr-1' id='btnOn'+service.id onclick='serviceOn("'+service.id+'","'+service.name+'")')= 'START'
+    button(type='button' class='btn btn-outline-secondary btn-sm ml-0 mr-1' id='btnOff'+service.id onclick='serviceOff("'+service.id+'","'+service.name+'")')= 'STOP'
+    button(type='button' class='btn btn-outline-secondary btn-sm ml-0 mr-1' id='btnRestart'+service.id onclick='serviceRestart("'+service.id+'","'+service.name+'")')= 'RESTART'
+    img(src='loader.gif' class='loader' id='loader'+service.id)
