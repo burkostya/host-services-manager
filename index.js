@@ -138,7 +138,7 @@ const getAvailableServices = async () => {
     .filter(service => !serviceExceptions.includes(service.name));
 };
 
-const twiketHome = '/home/twiket';
+const twiketHome = process.env.MOCK_SERVICES === 'true' ? './mocks/services' : '/home/twiket';
 
 const getFileDataByRunFile = async (serviceName, runFilePath, nameFileService) => {
   const readFileAsync = Promise.promisify(fs.readFile);
@@ -195,8 +195,13 @@ const getAvailableServicesWithBranch = async () => {
   const availableServices = await getAvailableServices();
 
   const renewAvailableServices = availableServices.map((service) => {
-    // eslint-disable-next-line no-param-reassign
-    service.fileService = `${service.path.replace('service', 'sv')}/run`;
+    if (process.env.MOCK_SERVICES === 'true') {
+      // eslint-disable-next-line no-param-reassign
+      service.fileService = `${service.path.replace('/etc/service', './mocks/services')}/run`;
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      service.fileService = `${service.path.replace('service', 'sv')}/run`;
+    }
     return service;
   });
 
@@ -238,6 +243,10 @@ const getAvailableServicesWithBranch = async () => {
 };
 
 const chefStatus = async () => {
+  if (process.env.MOCK_SERVICES === 'true') {
+    return 'running';
+  }
+
   const commandResult = await execCmd('/usr/bin/sudo pgrep chef-client');
   const rows = commandResult.split('\n').length;
   const status = rows > 2 ? 'run' : 'stopped';
