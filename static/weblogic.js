@@ -1,3 +1,6 @@
+import 'bootstrap/js/dist/util';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 /* eslint-disable no-unused-vars */
 const urlPrefix = '/services-manager';
 

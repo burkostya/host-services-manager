@@ -1,12 +1,4 @@
 .serviceName {
-  position: relative;
-  background-color: white;
-  width: 260px;
-  display: inline-block;
-  border: solid 1px gray;
-  border-radius: 4px;
-  margin: 3px 10px 3px 0px;
-  padding: 5px 8px;
   font-family: monospace;
   font-size: 14px;
 }
@@ -67,19 +59,6 @@
   pointer-events: all;
 }
 
-.serviceOn {
-	background-color: #dfffdf;
-}
-
-.serviceOff {
-	background-color: lightgray;
-}
-
-.branchInfo {
-    background-color: lightgray;
-    width: 600px;
-}
-
 .serviceError {
 	background-color: lightcoral;
 }
@@ -90,7 +69,6 @@
 
 .btnMass {
     margin: 0px 7px;
-    height: 25px;
 }
 
 .btnAll {
@@ -142,5 +120,5 @@
 }
 
 .serviceRow {
-  width: max-content;
+  margin: 8px;
 }

@@ -259,7 +259,7 @@ const hostname = async () => {
   return commandResult;
 };
 
-app.use(express.static('static'));
+app.use(express.static('dist'));
 app.set('view engine', 'pug');
 
 app.get('/', async (req, res) => {

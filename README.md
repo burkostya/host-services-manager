@@ -15,6 +15,12 @@
 npm install
 ```
 
+### build assets
+
+```sh
+npm build
+```
+
 ### run server
 
 set environment variable `MOCK_SERVICES` to `true`
