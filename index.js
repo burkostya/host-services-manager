@@ -216,19 +216,20 @@ const getAvailableServicesWithBranch = async () => {
     if (!fileData) continue;
 
     try {
-      const splitData = fileData.split('\n').filter(Boolean);
-      const splitLastData = splitData[splitData.length - 1].split(' ');
-      const year = [
-        splitLastData[7].substr(6, 2),
-        splitLastData[7].substr(4, 2),
-        splitLastData[7].substr(0, 4),
+      const lines = fileData.split('\n').filter(Boolean);
+      const lastLine = lines[lines.length - 1];
+      const words = lastLine.split(' ');
+      const date = [
+        words[7].substr(6, 2),
+        words[7].substr(4, 2),
+        words[7].substr(0, 4),
       ].join('.');
       const time = [
-        splitLastData[7].substr(8, 2),
-        splitLastData[7].substr(10, 2),
+        words[7].substr(8, 2),
+        words[7].substr(10, 2),
       ].join(':');
 
-      service.branch = `${splitLastData[1]}(${splitLastData[3]} ${time} ${year}`;
+      service.branch = `${words[1]}(${words[3]} ${time} ${date}`;
       // eslint-disable-next-line no-await-in-loop
       service.yamlFile = await getYamlByNameService(service.name);
       service.yamlFileShow = mappingYaml(service.name, service.yamlFile);
