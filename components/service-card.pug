@@ -9,7 +9,15 @@ div(class='serviceRow card flex-shrink-0')
         span(class='tooltiptext')= service.yamlFileShow
       span(class='badge badge-pill badge-secondary ml-auto')= 'STOPED'
   div(class="card-body")
-    span(class='serviceName' id='branch'+service.id)= service.branch
+    div
+      span(class='serviceName' id='branch'+service.id)= service.branch
+    div
+      span(class='revision' id='revision-'+service.id)= service.revision
+    div
+      span Deployed at 
+      span(class='time' id='time-'+service.id)= service.time
+      span  on 
+      span(class='date' id='date-'+service.id)= service.date
     div(id='dependentServiceOffModal' class='modal active')
       div(class='modal-header')
         div(id='dependentServiceOffModalHeader' class='title')

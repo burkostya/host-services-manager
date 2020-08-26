@@ -5,6 +5,7 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const uuid = require('uuid4');
 const mock = require('./mock');
+const revlog = require('./revlog');
 
 const app = express();
 const serviceExceptions = (process.env.EXCEPTIONS && process.env.EXCEPTIONS.split(',')) || [];
@@ -216,20 +217,16 @@ const getAvailableServicesWithBranch = async () => {
     if (!fileData) continue;
 
     try {
-      const lines = fileData.split('\n').filter(Boolean);
-      const lastLine = lines[lines.length - 1];
-      const words = lastLine.split(' ');
-      const date = [
-        words[7].substr(6, 2),
-        words[7].substr(4, 2),
-        words[7].substr(0, 4),
-      ].join('.');
-      const time = [
-        words[7].substr(8, 2),
-        words[7].substr(10, 2),
-      ].join(':');
+      const entries = revlog.parse(fileData);
 
-      service.branch = `${words[1]}(${words[3]} ${time} ${date}`;
+      if (entries.length === 0) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      const entry = entries[0];
+
+      Object.assign(service, entry);
       // eslint-disable-next-line no-await-in-loop
       service.yamlFile = await getYamlByNameService(service.name);
       service.yamlFileShow = mappingYaml(service.name, service.yamlFile);
