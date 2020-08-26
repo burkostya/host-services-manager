@@ -41,6 +41,10 @@ function parseLine(line) {
   return entry;
 }
 
+/**
+ * Parses revisions.log file to entries with branch, revision, date and time
+ * @param  {string} content - content of revisions.log
+ */
 function parse(content) {
   const lines = content.split('\n').filter(Boolean);
   if (lines.length === 0) {
