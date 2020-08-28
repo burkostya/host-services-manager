@@ -8,6 +8,7 @@ const mock = require('./mock');
 const revlog = require('./revlog');
 
 const app = express();
+
 const serviceExceptions = (process.env.EXCEPTIONS && process.env.EXCEPTIONS.split(',')) || [];
 
 if (serviceExceptions.length > 0) {
@@ -260,7 +261,9 @@ const hostname = async () => {
 app.use(express.static('dist'));
 app.set('view engine', 'pug');
 
-app.get('/', async (req, res) => {
+const router = express.Router();
+
+router.get('/', async (req, res) => {
   try {
     const servicesList = await getAvailableServicesWithBranch();
 
@@ -279,7 +282,7 @@ app.get('/', async (req, res) => {
   }
 });
 
-app.get('/chefStart', async (req, res) => {
+router.get('/chefStart', async (req, res) => {
   try {
     console.log('chefStart');
     // noinspection ES6MissingAwait
@@ -293,7 +296,7 @@ app.get('/chefStart', async (req, res) => {
   }
 });
 
-app.get('/chefKill', async (req, res) => {
+router.get('/chefKill', async (req, res) => {
   try {
     const commandResult = await execCmd('/usr/bin/sudo killall -s 9 chef-client');
     console.log('chefKill', commandResult);
@@ -332,7 +335,7 @@ async function doDependentServices(nameService, command, skipStatus) {
   return items;
 }
 
-app.get('/serviceOn/:name', async (req, res) => {
+router.get('/serviceOn/:name', async (req, res) => {
   try {
     const { name } = req.params;
     const command = '/usr/bin/sudo /usr/bin/sv start /etc/service/';
@@ -373,7 +376,7 @@ app.get('/serviceOn/:name', async (req, res) => {
   }
 });
 
-app.get('/serviceOffWD/:name', async (req, res) => {
+router.get('/serviceOffWD/:name', async (req, res) => {
   try {
     const { name } = req.params;
     const command = '/usr/bin/sudo /usr/bin/sv -v -w 30 force-stop /etc/service/';
@@ -417,7 +420,7 @@ app.get('/serviceOffWD/:name', async (req, res) => {
   }
 });
 
-app.get('/serviceOff/:name', async (req, res) => {
+router.get('/serviceOff/:name', async (req, res) => {
   try {
     const { name } = req.params;
     const command = '/usr/bin/sudo /usr/bin/sv -v -w 30 force-stop /etc/service/';
@@ -435,7 +438,7 @@ app.get('/serviceOff/:name', async (req, res) => {
   }
 });
 
-app.get('/serviceAll/:action', async (req, res) => {
+router.get('/serviceAll/:action', async (req, res) => {
   try {
     const { action } = req.params;
     let servicesList = await getAvailableServicesWithBranch();
@@ -482,7 +485,7 @@ app.get('/serviceAll/:action', async (req, res) => {
   }
 });
 
-app.get('/serviceRestart/:name', async (req, res) => {
+router.get('/serviceRestart/:name', async (req, res) => {
   try {
     const { name } = req.params;
     const command = '/usr/bin/sudo /usr/bin/sv -v -w 30 force-restart /etc/service/';
@@ -499,6 +502,12 @@ app.get('/serviceRestart/:name', async (req, res) => {
     res.json({ ok: false });
   }
 });
+
+app.use('/', router);
+
+if (process.env.MOCK_SERVICES === 'true') {
+  app.use('/services-manager', router);
+}
 
 const port = process.env.PORT || 3000;
 
