@@ -30,7 +30,10 @@ function parseLine(line) {
         rev = word.slice(0, -1);
       }
 
-      entry.revision = rev;
+      entry.revision = {
+        full: rev,
+        short: rev.slice(0, 8),
+      };
     }
 
     if (index === 7) {

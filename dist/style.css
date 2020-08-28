@@ -1,6 +1,27 @@
+h2 {
+  font-size: 1.4rem;
+}
+
 .serviceName {
   font-family: monospace;
-  font-size: 14px;
+}
+
+.revision {
+  font-size: 0.8rem;
+}
+
+.deploy-date {
+  font-size: 0.8rem;
+}
+
+.badge {
+  margin: auto;
+}
+
+.fade-right {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0), rgb(0, 0, 0, 1) 20%);
+  background-clip: text;
+  color: transparent;
 }
 
 .modal {
@@ -64,7 +85,29 @@
 }
 
 .btn {
-  margin: 0px 7px;
+  border-radius: 2px;
+  border-color: #d9d9d9;
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  border-color: #1890ff;
+} 
+
+.btn-card-secondary {
+  color: #ADB5BD;
+}
+
+.btn-card-secondary:hover {
+  text-decoration: none;
+  color: grey;
+}
+
+
+
+.card-header {
+  background-color: white;
+  border-bottom: none;
 }
 
 .btnMass {
@@ -121,4 +164,17 @@
 
 .serviceRow {
   margin: 8px;
+}
+
+.card {
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+.branch {
+  width: 100%;
+  max-width: 240px;
+
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
 }

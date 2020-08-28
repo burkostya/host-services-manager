@@ -1,22 +1,23 @@
 div(class='serviceRow card flex-shrink-0')
-  div(class="card-header d-flex")
+  div(class="card-header d-flex pb-2")
     if service.status == 'run'
-      div(class='serviceName serviceOn' data-toggle='tooltip' id='serviceName'+service.id)= service.name
+      div(class='serviceName serviceOn font-weight-bold' data-toggle='tooltip' id='serviceName'+service.id)= service.name
         span(class='tooltiptext')= service.yamlFileShow
-      span(class='badge badge-pill badge-success ml-auto')= 'RUNNING'
+      div(class='ml-auto d-flex')
+        span(class='badge badge-pill badge-success')= 'RUNNING'
     else
-      div(class='serviceName serviceOff' data-toggle='tooltip' id='serviceName'+service.id)= service.name
+      div(class='serviceName serviceOff font-weight-bold' data-toggle='tooltip' id='serviceName'+service.id)= service.name
         span(class='tooltiptext')= service.yamlFileShow
-      span(class='badge badge-pill badge-secondary ml-auto')= 'STOPED'
-  div(class="card-body")
-    div
-      span(class='serviceName' id='branch'+service.id)= service.branch
-    div
-      span(class='revision' id='revision-'+service.id)= service.revision
-    div
-      span Deployed at 
+      div(class='ml-auto d-flex')
+        span(class='badge badge-pill badge-secondary')= 'STOPED'
+  div(class="card-body pt-2 pb-3")
+    div(class="d-flex align-items-baseline")
+      span(class='branch fade-right' id='branch'+service.id)= service.branch
+      span(class='revision text-secondary pl-2 ml-auto' id='revision-'+service.id)= service.revision.short
+    div(class='deploy-date pt-3')
+      span(class='text-secondary') Deployed at 
       span(class='time' id='time-'+service.id)= service.time
-      span  on 
+      span(class='text-secondary')  on 
       span(class='date' id='date-'+service.id)= service.date
     div(id='dependentServiceOffModal' class='modal active')
       div(class='modal-header')
@@ -24,8 +25,14 @@ div(class='serviceRow card flex-shrink-0')
         button(data-close-button class='close-button' onclick='closePopup()')='x'
       div(id='dependentServiceOffModalBody' class='modal-body')
   div(class="card-footer py-0 px-1 d-flex align-items-center")
-    input(type='checkbox' class="ml-1 mr-2" title='Работа с зависимостями' id='checkbox'+service.id)
-    button(type='button' class='btn btn-outline-primary btn-sm ml-0 mr-1' id='btnOn'+service.id onclick='serviceOn("'+service.id+'","'+service.name+'")')= 'START'
-    button(type='button' class='btn btn-outline-secondary btn-sm ml-0 mr-1' id='btnOff'+service.id onclick='serviceOff("'+service.id+'","'+service.name+'")')= 'STOP'
-    button(type='button' class='btn btn-outline-secondary btn-sm ml-0 mr-1' id='btnRestart'+service.id onclick='serviceRestart("'+service.id+'","'+service.name+'")')= 'RESTART'
-    img(src='loader.gif' class='loader' id='loader'+service.id)
+    div(class="primary-actions d-flex")
+      div(class="btn-group")
+        button(type='button' class='btn btn-primary btn-sm' id='btnOn'+service.id onclick='serviceOn("'+service.id+'","'+service.name+'")') START
+        button(type="button" class="btn btn-primary btm-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+          span(class="sr-only") Toggle Dropdown
+        div(class="dropdown-menu")
+          a(class="dropdown-item" href="#" id='checkbox'+service.id) Start without dependencies
+    div(class="secondary-actions ml-auto")
+      img(src='loader.gif' class='loader' id='loader'+service.id)
+      button(type='button' class='btn btn-link btn-card-secondary btn-sm ml-0 mr-1 border-0 font-weight-bold' id='btnOff'+service.id onclick='serviceOff("'+service.id+'","'+service.name+'")')= 'STOP'
+      button(type='button' class='btn btn-link btn-card-secondary btn-sm ml-0 mr-1 border-0 font-weight-bold' id='btnRestart'+service.id onclick='serviceRestart("'+service.id+'","'+service.name+'")')= 'RESTART'
