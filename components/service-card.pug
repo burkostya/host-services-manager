@@ -31,7 +31,7 @@ div(class='serviceRow card flex-shrink-0')
         button(type="button" class="btn btn-primary btm-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
           span(class="sr-only") Toggle Dropdown
         div(class="dropdown-menu")
-          a(class="dropdown-item" href="#" id='checkbox'+service.id) Start without dependencies
+          a(class="dropdown-item disabled" href="#" id='checkbox'+service.id) Start without dependencies
     div(class="secondary-actions ml-auto")
       img(src='loader.gif' class='loader' id='loader'+service.id)
       button(type='button' class='btn btn-link btn-card-secondary btn-sm ml-0 mr-1 border-0 font-weight-bold' id='btnOff'+service.id onclick='serviceOff("'+service.id+'","'+service.name+'")')= 'STOP'
