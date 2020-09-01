@@ -20,18 +20,19 @@ function showModal(headerText, bodyText) {
   document.getElementById('dependentServiceOffModalBody').innerHTML = bodyText;
 }
 
-const stateColors = {
-  serviceOn: '#dfffdf',
-  serviceOff: 'lightgray',
-  error: 'lightcoral',
+const serviceStates = {
+  serviceOn: { class: 'badge-success', state: 'running' },
+  serviceOff: { class: 'badge-secondary', state: 'stoped' },
+  error: { class: 'badge-danger', state: 'error' },
 };
 
-function setColor(id, state) {
-  document.getElementById(`serviceName${id}`).style['background-color'] = stateColors[state] || stateColors.error;
-}
+function setState(id, state) {
+  const badge = document.getElementById(`serviceName${id}`).querySelector('.state > span');
+  Object.values(serviceStates).forEach(s => badge.classList.remove(s.class));
 
-function getValueCheckbox(id) {
-  return document.getElementById(`checkbox${id}`).checked;
+  const newState = serviceStates[state] || serviceStates.error;
+  badge.classList.add(newState.class);
+  badge.textContent = newState.state.toUpperCase();
 }
 
 function enableLoadingIcon(id) {
@@ -106,21 +107,19 @@ function serviceAction(action, id, name, postAction) {
   });
 }
 
-function serviceOn(id, name) {
-  const checked = getValueCheckbox(id);
-
+window.serviceOn = function serviceOn(id, name, withDeps) {
   function postAction(i, n, err, resp) {
-    if (checked) {
+    if (withDeps) {
       resp.items.forEach((item) => {
-        setColor(item.id, item.ok ? 'serviceOn' : 'error');
+        setState(item.id, item.ok ? 'serviceOn' : 'error');
       });
     } else {
-      setColor(id, resp.ok ? 'serviceOn' : 'error');
+      setState(id, resp.ok ? 'serviceOn' : 'error');
     }
   }
 
   serviceAction('serviceOn', id, name, postAction);
-}
+};
 
 function serviceOffWD(id, name) {
   function postAction(i, n, err, resp) {
@@ -130,7 +129,7 @@ function serviceOffWD(id, name) {
     }
 
     resp.items.forEach((item) => {
-      setColor(item.id, item.ok ? 'serviceOff' : 'error');
+      setState(item.id, item.ok ? 'serviceOff' : 'error');
     });
   }
   serviceAction('serviceOffWD', id, name, postAction);
@@ -138,22 +137,21 @@ function serviceOffWD(id, name) {
 
 function serviceOffOne(id, name) {
   function postAction(i, n, err, resp) {
-    setColor(id, resp.ok ? 'serviceOff' : 'error');
+    setState(id, resp.ok ? 'serviceOff' : 'error');
   }
 
   serviceAction('serviceOff', id, name, postAction);
 }
 
-function serviceOff(id, name) {
-  const checked = getValueCheckbox(id);
-  const method = checked ? serviceOffWD : serviceOffOne;
+function serviceOff(id, name, withDeps) {
+  const method = withDeps ? serviceOffWD : serviceOffOne;
 
   method(id, name);
 }
 
 function serviceRestart(id, name) {
   function postAction(i, n, err, resp) {
-    setColor(id, resp && resp.ok ? 'serviceOn' : 'error');
+    setState(id, resp && resp.ok ? 'serviceOn' : 'error');
   }
   serviceAction('serviceRestart', id, name, postAction);
 }
@@ -198,7 +196,7 @@ function serviceAll(action) {
         }
       }
 
-      setColor(item.id, color);
+      setState(item.id, color);
     });
 
     closePopup();

@@ -1,14 +1,14 @@
 div(class='serviceRow card flex-shrink-0')
-  div(class="card-header d-flex pb-2")
+  div(class="card-header d-flex pb-2" id='serviceName'+service.id)
     if service.status == 'run'
-      div(class='serviceName serviceOn font-weight-bold' data-toggle='tooltip' id='serviceName'+service.id)= service.name
+      div(class='serviceName serviceOn font-weight-bold' data-toggle='tooltip')= service.name
         span(class='tooltiptext')= service.yamlFileShow
-      div(class='ml-auto d-flex')
+      div(class='ml-auto d-flex state')
         span(class='badge badge-pill badge-success')= 'RUNNING'
     else
-      div(class='serviceName serviceOff font-weight-bold' data-toggle='tooltip' id='serviceName'+service.id)= service.name
+      div(class='serviceName serviceOff font-weight-bold' data-toggle='tooltip')= service.name
         span(class='tooltiptext')= service.yamlFileShow
-      div(class='ml-auto d-flex')
+      div(class='ml-auto d-flex state')
         span(class='badge badge-pill badge-secondary')= 'STOPED'
   div(class="card-body pt-2 pb-3")
     div(class="d-flex align-items-baseline")
@@ -27,11 +27,11 @@ div(class='serviceRow card flex-shrink-0')
   div(class="card-footer py-0 px-1 d-flex align-items-center")
     div(class="primary-actions d-flex")
       div(class="btn-group")
-        button(type='button' class='btn btn-primary btn-sm' id='btnOn'+service.id onclick='serviceOn("'+service.id+'","'+service.name+'")') START
+        button(type='button' class='btn btn-primary btn-sm' id='btnOn'+service.id onclick='serviceOn("'+service.id+'","'+service.name+'", true)') START
         button(type="button" class="btn btn-primary btm-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
           span(class="sr-only") Toggle Dropdown
         div(class="dropdown-menu")
-          a(class="dropdown-item disabled" href="#" id='checkbox'+service.id) Start without dependencies
+          a(class="dropdown-item disabled" href="#" id='checkbox'+service.id onclick='serviceOn("'+service.id+'","'+service.name+'", false)') Start without dependencies
     div(class="secondary-actions ml-auto")
       img(src='loader.gif' class='loader' id='loader'+service.id)
       button(type='button' class='btn btn-link btn-card-secondary btn-sm ml-0 mr-1 border-0 font-weight-bold' id='btnOff'+service.id onclick='serviceOff("'+service.id+'","'+service.name+'")')= 'STOP'

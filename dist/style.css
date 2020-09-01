@@ -80,10 +80,6 @@ h2 {
   pointer-events: all;
 }
 
-.serviceError {
-	background-color: lightcoral;
-}
-
 .btn {
   border-radius: 2px;
   border-color: #d9d9d9;

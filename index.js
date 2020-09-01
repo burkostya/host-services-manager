@@ -339,7 +339,12 @@ router.get('/serviceOn/:name', async (req, res) => {
   try {
     const { name } = req.params;
     const command = '/usr/bin/sudo /usr/bin/sv start /etc/service/';
-    const commandResult = await execCmd(`${command}${name}`);
+    let commandResult;
+    if (process.env.MOCK_SERVICES === 'true') {
+      commandResult = 'ok';
+    } else {
+      commandResult = await execCmd(`${command}${name}`);
+    }
 
     const items = [];
     const startServices = [];
@@ -351,8 +356,15 @@ router.get('/serviceOn/:name', async (req, res) => {
     if (startServices.length) {
       // eslint-disable-next-line no-restricted-syntax
       for (const needOn of startServices) {
-        // eslint-disable-next-line no-await-in-loop
-        const cmdResult = await execCmd(`${command}${needOn}`);
+        let cmdResult;
+
+        if (process.env.MOCK_SERVICES === 'true') {
+          cmdResult = 'ok';
+        } else {
+          // eslint-disable-next-line no-await-in-loop
+          cmdResult = await execCmd(`${command}${needOn}`);
+        }
+
         items.push(
           { id: MAP_SERVICES[needOn].id, ok: cmdResult.startsWith('ok') || cmdResult.startsWith('kill') },
         );
