@@ -174,3 +174,10 @@ h2 {
   text-overflow: clip;
   white-space: nowrap;
 }
+
+.no-decoration {
+  text-decoration: none;
+}
+.no-decoration:focus {
+  text-decoration: none;
+}

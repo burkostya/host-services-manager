@@ -143,11 +143,11 @@ function serviceOffOne(id, name) {
   serviceAction('serviceOff', id, name, postAction);
 }
 
-function serviceOff(id, name, withDeps) {
+window.serviceOff = function serviceOff(id, name, withDeps) {
   const method = withDeps ? serviceOffWD : serviceOffOne;
 
   method(id, name);
-}
+};
 
 function serviceRestart(id, name) {
   function postAction(i, n, err, resp) {

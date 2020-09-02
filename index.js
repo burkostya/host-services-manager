@@ -392,8 +392,14 @@ router.get('/serviceOffWD/:name', async (req, res) => {
   try {
     const { name } = req.params;
     const command = '/usr/bin/sudo /usr/bin/sv -v -w 30 force-stop /etc/service/';
-    let commandResult = await execCmd(`${command}${name}`);
-    // commandResult =  mock.svStopResult;
+
+    let commandResult;
+    if (process.env.MOCK_SERVICES === 'true') {
+      commandResult = 'ok';
+    } else {
+      commandResult = await execCmd(`${command}${name}`);
+    }
+
     MAP_SERVICES[name].status = 'down';
     // eslint-disable-next-line no-mixed-operators
     const runParentServices = (MAP_SERVICES[name] && MAP_SERVICES[name].parents || [])
@@ -412,8 +418,13 @@ router.get('/serviceOffWD/:name', async (req, res) => {
     if (finishResult.needOff.length) {
       // eslint-disable-next-line no-restricted-syntax
       for (const needOff of finishResult.needOff) {
-        // eslint-disable-next-line no-await-in-loop
-        commandResult = await execCmd(`${command}${needOff}`);
+        if (process.env.MOCK_SERVICES === 'true') {
+          commandResult = 'ok';
+        } else {
+          // eslint-disable-next-line no-await-in-loop
+          commandResult = await execCmd(`${command}${name}`);
+        }
+
         items.push(
           { id: MAP_SERVICES[needOff].id, ok: commandResult.startsWith('ok') || commandResult.startsWith('kill') },
         );
@@ -435,8 +446,16 @@ router.get('/serviceOffWD/:name', async (req, res) => {
 router.get('/serviceOff/:name', async (req, res) => {
   try {
     const { name } = req.params;
-    const command = '/usr/bin/sudo /usr/bin/sv -v -w 30 force-stop /etc/service/';
-    const commandResult = await execCmd(`${command}${name}`);
+
+    let commandResult;
+    if (process.env.MOCK_SERVICES === 'true') {
+      commandResult = 'ok';
+    } else {
+      const command = '/usr/bin/sudo /usr/bin/sv -v -w 30 force-stop /etc/service/';
+      // eslint-disable-next-line no-await-in-loop
+      commandResult = await execCmd(`${command}${name}`);
+    }
+
     // commandResult =  mock.svStopResult;
     MAP_SERVICES[name].status = 'down';
 

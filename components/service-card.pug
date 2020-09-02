@@ -31,8 +31,13 @@ div(class='serviceRow card flex-shrink-0')
         button(type="button" class="btn btn-primary btm-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
           span(class="sr-only") Toggle Dropdown
         div(class="dropdown-menu")
-          a(class="dropdown-item disabled" href="#" id='checkbox'+service.id onclick='serviceOn("'+service.id+'","'+service.name+'", false)') Start without dependencies
+          button(type="button" class="dropdown-item" id='checkbox'+service.id onclick='serviceOn("'+service.id+'","'+service.name+'", false)') Start without dependencies
+          button(type="button" class="dropdown-item" href="#" id='btnRestart'+service.id onclick='serviceRestart("'+service.id+'","'+service.name+'")') Restart
     div(class="secondary-actions ml-auto")
       img(src='loader.gif' class='loader' id='loader'+service.id)
-      button(type='button' class='btn btn-link btn-card-secondary btn-sm ml-0 mr-1 border-0 font-weight-bold' id='btnOff'+service.id onclick='serviceOff("'+service.id+'","'+service.name+'")')= 'STOP'
-      button(type='button' class='btn btn-link btn-card-secondary btn-sm ml-0 mr-1 border-0 font-weight-bold' id='btnRestart'+service.id onclick='serviceRestart("'+service.id+'","'+service.name+'")')= 'RESTART'
+      div(class="btn-group")
+        button(type="button" class='btn btn-link btn-card-secondary btn-sm ml-0 mr-0 border-0 font-weight-bold no-decoration' id='btnOff'+service.id onclick='serviceOff("'+service.id+'","'+service.name+'", true)') STOP
+        button(type="button" class="btn btn-link btn-card-secondary btm-sm pl-1 border-0 dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+          span(class="sr-only") Toggle Dropdown
+        div(class="dropdown-menu")
+          button(type="button" class="dropdown-item" href="#" id='checkbox'+service.id onclick='serviceOff("'+service.id+'","'+service.name+'", false)') Stop only this service
