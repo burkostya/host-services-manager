@@ -149,12 +149,12 @@ window.serviceOff = function serviceOff(id, name, withDeps) {
   method(id, name);
 };
 
-function serviceRestart(id, name) {
+window.serviceRestart = function serviceRestart(id, name) {
   function postAction(i, n, err, resp) {
     setState(id, resp && resp.ok ? 'serviceOn' : 'error');
   }
   serviceAction('serviceRestart', id, name, postAction);
-}
+};
 
 function reloadPage() {
   document.location = document.location;

@@ -520,7 +520,13 @@ router.get('/serviceRestart/:name', async (req, res) => {
   try {
     const { name } = req.params;
     const command = '/usr/bin/sudo /usr/bin/sv -v -w 30 force-restart /etc/service/';
-    const commandResult = await execCmd(`${command}${name}`);
+
+    let commandResult;
+    if (process.env.MOCK_SERVICES === 'true') {
+      commandResult = 'ok';
+    } else {
+      commandResult = await execCmd(`${command}${name}`);
+    }
 
     MAP_SERVICES[name].status = 'run';
 
