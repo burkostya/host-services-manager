@@ -3,12 +3,12 @@ div(class='serviceRow card flex-shrink-0')
     if service.status == 'run'
       div(class='serviceName serviceOn font-weight-bold' data-toggle='tooltip')= service.name
         span(class='tooltiptext')= service.yamlFileShow
-      div(class='ml-auto d-flex state')
+      div(class='ml-auto d-flex state pl-2')
         span(class='badge badge-pill badge-success')= 'RUNNING'
     else
       div(class='serviceName serviceOff font-weight-bold' data-toggle='tooltip')= service.name
         span(class='tooltiptext')= service.yamlFileShow
-      div(class='ml-auto d-flex state')
+      div(class='ml-auto d-flex state pl-2')
         span(class='badge badge-pill badge-secondary')= 'STOPED'
   div(class="card-body pt-2 pb-3")
     div(class="d-flex align-items-baseline")
