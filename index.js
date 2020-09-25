@@ -4,7 +4,7 @@ const Promise = require('bluebird');
 const fs = require('fs');
 const yaml = require('js-yaml');
 const uuid = require('uuid4');
-const mock = require('./mock');
+const mock = require('./mocks/mock');
 const revlog = require('./revlog');
 
 const app = express();
