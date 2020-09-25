@@ -2,6 +2,10 @@ h2 {
   font-size: 1.4rem;
 }
 
+body {
+  background-color: #f7f7f7;
+}
+
 .serviceName {
   font-family: monospace;
 }
@@ -80,14 +84,27 @@ h2 {
   pointer-events: all;
 }
 
+.text-secondary {
+  color: #888 !important;
+}
+
 .btn {
   border-radius: 2px;
   border-color: #d9d9d9;
 }
 
+.badge-success {
+  background-color: rgb(63, 204, 98);
+}
+
 .btn-primary {
-  background-color: #1890ff;
-  border-color: #1890ff;
+  background-color: #01abfb;
+  border-color: #01abfb;
+} 
+
+.btn-primary:hover {
+  background-color: #009de6;
+  border-color: #009de6;
 } 
 
 .btn-card-secondary {
@@ -163,7 +180,8 @@ h2 {
 }
 
 .card {
-  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 0 0 0 rgba(0,0,0,.2);
+  border-radius: 4px;
 }
 
 .branch {
